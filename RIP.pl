@@ -15,7 +15,7 @@
 :- dynamic(inventory_cap/1). /* kapasitas inventory */
 :- dynamic(enemy/3).
 :- dynamic(enemy_num/1).
-:- dymanic(medicine/2).
+:- dynamic(medicine/2).
 
 init :-
     /* Fakta pemain */
@@ -105,8 +105,7 @@ start :-
     write('The mission is to reach "RIP" so you can rest your soul in peace.'), nl,
     nl,nl,write('Have fun with the game and hopefully you can rest in peace! HAHA '), nl,
     nl, help,
-    init,
-    setenemy.
+    init.
 
 /* help -- menampilkan command yang dapat digunakan dalam game dan legenda */
 help :-
