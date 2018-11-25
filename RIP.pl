@@ -477,4 +477,8 @@ die :- health(A), A < 1,
 	print('Your health is lower than zero, no chicken dinner for you.'), nl,
 	quit, fail, !.
 
+die :- position(X,Y), object_loc(X,Y, dz),
+	print('You are in the deadzone, you are dead.'), nl.
+	quit, fail, !.
+
 die :- !.
