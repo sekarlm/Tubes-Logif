@@ -485,7 +485,6 @@ die :- position(X,Y), object_loc(X,Y, dz),
 	print('You are in the deadzone, you are dead.'), nl,
 	quit, fail, !.
 
-die :- !.
 
 retaliate(P) :- 
 	health(X), X1 is X - P,
