@@ -442,19 +442,18 @@ attack:- position(X,Y), object_loc(X,Y, Name), enemy(Name,H,P),
 	used_weapon(none), weapon(W,A),
 	print('You cannot attack, you dont have a weapon'),!.
 
-/* Menyerang musuh */
-attack:- position(X,Y), object_loc(X,Y, Name), enemy(Name,H,P),
-	used_weapon(none), weapon(W,A),
-	print('You cannot attack, you dont have a weapon'),!.
+attack:- jmlammo(X), X < 1, print('There is no ammo in your weapon!'),!.
 
 attack:- position(X,Y), object_loc(X,Y, Name), enemy(Name,H,P),
 	used_weapon(W), weapon(W,A),
 	H1 is H - A, retract(enemy(Name,H,P)),
 	print(Name), print(' HP dropped to '), check_health(H1), nl,
-	asserta(enemy(Name,H1,P)), checkdeath(Name),
+	asserta(enemy(Name,H1,P)), checkdeath(Name), jmlammo(AMMO), AM is AMMO-1,
+	retract(jmlammo(AMMO)), asserta(jmlammo(AM)),
 	H1 > 0, retaliate(P), fail.
 
 attack :- !.
+
 
 check_health(A) :- A < 1, print('0'), !.
 check_health(A) :- print(A), !.
