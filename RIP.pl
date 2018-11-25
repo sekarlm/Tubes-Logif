@@ -256,7 +256,14 @@ s :- position(X,Y), F is X+1, \+ object_loc(F,Y,dz), retract(position(_,_)), cou
 s :- print('Do not move to the south or you will die!!'), nl, !.
 
 countPlaytime :- playtime(T), T1 is T+1,
-    retract(playtime(_)), asserta(playtime(T1)), die, !.
+    retract(playtime(_)), asserta(playtime(T1)), setDeadzone, die, !.
+
+setDeadzone :- playtime(T), mod(T,20) =:= 0, F is T/20,
+    X is 0+F, Y is 16-F,
+    retract(object_loc(X,_,_)), retract(object_loc(_,Y,_)),
+    asserta(object_loc(X,_,dz)), asserta(object_loc(_,Y,dz)), !.
+
+/* map - Menampilkan peta */
 
 /* mekanisme menggunakan barang di inventory */
 use(bandage) :-
