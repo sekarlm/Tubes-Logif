@@ -404,3 +404,30 @@ printMap(X,Y) :- object_loc(X,Y, dz), print('X'), !, F is Y+1, printMap(X,F).
 printMap(X,Y) :- object_loc(X,Y, Objek), enemy(Objek,_,_), print('E'), !, F is Y+1, printMap(X,F).
 printMap(X,Y) :- print('-'), F is Y + 1, printMap(X,F).
 
+
+/* command save */
+save(Filename) :-
+	telling(Old), tell(Filename),
+	listing(object_loc/3), listing(position/2),
+	listing(health/1), listing(jmlarmor/1),
+	listing(jmlammo/1), listing(used_weapon/1), listing(weapon/2),
+	listing(inventory/1), listing(inventory_cap/1), listing(enemy/3),
+  listing(enemy_num/1), listing(playtime/1),
+	told, tell(Old).
+
+/* command load */
+loadGame(Filename) :-
+	quit,
+	seeing(Old),
+	see(Filename),
+	repeat,
+	read(Data),
+	process(Data),
+	seen,
+	print('File succesfully loaded'),
+	see(Old),
+	!.
+
+process(end_of_file) :- !.
+process(Data) :- asserta(Data), fail.
+
