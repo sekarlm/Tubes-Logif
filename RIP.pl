@@ -366,3 +366,44 @@ printMap(X,Y) :- position(X,Y), print('P'), !, F is Y+1, printMap(X,F).
 printMap(X,Y) :- object_loc(X,Y, dz), print('X'), !, F is Y+1, printMap(X,F).
 printMap(X,Y) :- object_loc(X,Y, Objek), enemy(Objek,_,_), print('E'), !, F is Y+1, printMap(X,F).
 printMap(X,Y) :- print('-'), F is Y + 1, printMap(X,F).
+
+/*Kelola Inventory*/
+/*in_inventory untuk ngecek apakah barangnya ada di inventory atau nggak*/
+in_inventory(X):-
+	inventory(L),
+	member(X,L),!.
+	
+/*PutInInvent untuk taruh barang yang diambil ke dalam inventory*/
+putInInvent(X,Y,Object):-
+/*Masih ada tempat di inventory*/
+	inventory(L),length(L,Z),inventory_cap(N),L<N,
+	retract(inventory(_)),
+	retract(object_loc(X,Y,Object)),
+	print("Add "),print(Obejct),("to inventory."),nl,
+	asserta(inventory(Object|L)),
+	movEnemy,
+	countPlaytime,!.
+/*Kasus inventory penuh*/
+putInInvent(X,Y,Object):-
+	inventory(L),length(L,Z),inventory_cap(N),L=N,
+	print("Can't add the "),print(Object),print("to inventory."),nl,!.
+	
+/*Take(Object) untuk ambil object yang sepetak dengan player*/
+take(Object):-
+	/*Object=Enemy*/
+	position(X,Y),object_loc(X,Y),enemy(Object,_,_),
+	print("Can't invent the object. It's your enemy, attack it!"),!.
+take(Object):-
+	/*Object tepat*/
+	position(X,Y),object_loc(X,Y),!,
+	putInInvent(X,Y,Object).
+take(Object):-
+	/*else, Gaada object*/
+	print("There's no any "),print(Object),print("detected"),!.
+	
+	
+
+	
+	
+
+
