@@ -246,17 +246,17 @@ printPetak(P,Q) :- object_loc(P, Q, Object), medicine(Object,_), print('M'), !.
 printPetak(P,Q) :- object_loc(P, Q, Object), ammo(Object,_), print('O'), !.
 printPetak(P,Q) :- print('-'), !.
 
-/* Mekanisme gerakan pemain */
-w :- position(X,Y), F is Y - 1, \+ object_loc(X,F,dz), retract(position(_,_)), countPlaytime, !, asserta(position(X,F)), print('You moved to the west.'), nl, !, movenemy, !.
+/* gerak pemain */
+w :- position(X,Y), F is Y - 1, retract(position(_,_)), countPlaytime, !, asserta(position(X,F)), print('You moved to the west.'), nl, !, movenemy, die, !.
 w :- print('Do not move to the west or you will die!!'), nl, !.
 
-e :- position(X,Y), F is Y + 1, \+ object_loc(X,F,dz), retract(position(_,_)), countPlaytime, !, asserta(position(X,F)), print('You moved to the east.'), nl, !, movenemy, !.
+e :- position(X,Y), F is Y + 1, retract(position(_,_)), countPlaytime, !, asserta(position(X,F)), print('You moved to the east.'), nl, !, movenemy, die, !.
 e :- print('Do not move to the east or you will die!!'), nl, !.
 
-n :- position(X,Y), F is X - 1, \+ object_loc(F,Y,dz), retract(position(_,_)), countPlaytime, !, asserta(position(F,Y)), print('You moved to the north.'), nl, !, movenemy, !.
+n :- position(X,Y), F is X - 1, retract(position(_,_)), countPlaytime, !, asserta(position(F,Y)), print('You moved to the north.'), nl, !, movenemy, die, !.
 n :- print('Do not move to the nort or you will die!!'), nl, !.
 
-s :- position(X,Y), F is X + 1, \+ object_loc(F,Y,dz), retract(position(_,_)), countPlaytime, !, asserta(position(F,Y)), print('You moved to the south.'), nl, !, movenemy, !.
+s :- position(X,Y), F is X + 1, retract(position(_,_)), countPlaytime, !, asserta(position(F,Y)), print('You moved to the south.'), nl, !, movenemy, die, !.
 s :- print('Do not move to the south or you will die!!'), nl, !.
 
 countPlaytime :- playtime(T), T1 is T+1,
