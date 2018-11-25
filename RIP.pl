@@ -214,6 +214,7 @@ look :- cekEnemy, fail.
 look :- cekFirstAid, fail.
 look :- cekbandage, fail.
 look :- cekWeapon, fail.
+look :- cekAmmo,fail.
 look :- printMap3x3, !, !.
 /* rule terkait command look */
 cekEnemy :-
@@ -225,6 +226,8 @@ cekbandage :-
     position(X,Y), object_loc(X,Y, bandage), write('You see bandage lying in the ground!'), nl, !.
 cekWeapon :-
     position(X,Y), object_loc(X,Y, Name), weapon(Name,_), typeofweapon(Name), !.
+cekAmmo :-
+	position(X,Y), object_loc(X,Y, Name), ammo(Name,_), write('You see ammo lying in the ground!'), nl, !.
 /* rule untuk menentukan jenis weapon */
 typeofweapon(Name) :- Name = awm, write('You see an awm lying in the ground!'), nl, !.
 typeofweapon(Name) :- Name = groza, write('You see a groza lying in the ground!'), nl, !.
@@ -240,6 +243,7 @@ printPetak(P,Q) :- object_loc(P, Q, dz), print('X'), !.
 printPetak(P,Q) :- object_loc(P, Q, Object), enemy(Object,_,_), print('E'), !.
 printPetak(P,Q) :- object_loc(P, Q, Object), weapon(Object,_), print('W'), !.
 printPetak(P,Q) :- object_loc(P, Q, Object), medicine(Object,_), print('M'), !.
+printPetak(P,Q) :- object_loc(P, Q, Object), ammo(Object,_), print('O'), !.
 printPetak(P,Q) :- print('-'), !.
 
 /* Mekanisme gerakan pemain */
