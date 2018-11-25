@@ -243,16 +243,16 @@ printPetak(P,Q) :- object_loc(P, Q, Object), medicine(Object,_), print('M'), !.
 printPetak(P,Q) :- print('-'), !.
 
 /* Mekanisme gerakan pemain */
-w :- position(X,Y), F is Y - 1, \+ object_loc(X,F,dz), retract(position(_,_)), countPlaytime, !, asserta(position(X,F)), print('You moved to the west.'), nl, !, movEnemy, !.
+w :- position(X,Y), F is Y - 1, \+ object_loc(X,F,dz), retract(position(_,_)), countPlaytime, !, asserta(position(X,F)), print('You moved to the west.'), nl, !, movenemy, !.
 w :- print('Do not move to the west or you will die!!'), nl, !.
 
-e :- position(X,Y), F is Y + 1, \+ object_loc(X,F,dz), retract(position(_,_)), countPlaytime, !, asserta(position(X,F)), print('You moved to the east.'), nl, !, movEnemy, !.
+e :- position(X,Y), F is Y + 1, \+ object_loc(X,F,dz), retract(position(_,_)), countPlaytime, !, asserta(position(X,F)), print('You moved to the east.'), nl, !, movenemy, !.
 e :- print('Do not move to the east or you will die!!'), nl, !.
 
-n :- position(X,Y), F is X - 1, \+ object_loc(F,Y,dz), retract(position(_,_)), countPlaytime, !, asserta(position(F,Y)), print('You moved to the north.'), nl, !, movEnemy, !.
+n :- position(X,Y), F is X - 1, \+ object_loc(F,Y,dz), retract(position(_,_)), countPlaytime, !, asserta(position(F,Y)), print('You moved to the north.'), nl, !, movenemy, !.
 n :- print('Do not move to the nort or you will die!!'), nl, !.
 
-s :- position(X,Y), F is X + 1, \+ object_loc(F,Y,dz), retract(position(_,_)), countPlaytime, !, asserta(position(F,Y)), print('You moved to the south.'), nl, !, movEnemy, !.
+s :- position(X,Y), F is X + 1, \+ object_loc(F,Y,dz), retract(position(_,_)), countPlaytime, !, asserta(position(F,Y)), print('You moved to the south.'), nl, !, movenemy, !.
 s :- print('Do not move to the south or you will die!!'), nl, !.
 
 countPlaytime :- playtime(T), T1 is T+1,
@@ -357,8 +357,6 @@ status :-
 	enemy_num(E), print('Enemy left : '), print(E), nl,
 	fail.
 
-/* Kondisi kalah */
-
 /*Kelola Inventory*/
 /*in_inventory untuk ngecek apakah barangnya ada di inventory atau nggak*/
 in_inventory(X):-
@@ -373,7 +371,7 @@ putInInvent(X,Y,Object):-
 	retract(object_loc(X,Y,Object)),
 	print("Add "),print(Obejct),("to inventory."),nl,
 	asserta(inventory(Object|L)),
-	movEnemy,
+	movenemy,
 	countPlaytime,!.
 /*Kasus inventory penuh*/
 putInInvent(X,Y,Object):-
@@ -470,3 +468,8 @@ checkdeath(A) :- !.
 
 /* Kondisi menang */
 checkvictory :- enemy_num(0), print('Congratulations, you win the game, you truly are the King of Knights!'), nl, quit, !.
+
+/* Pergerakan musuh */
+movenemy :- move_enemy(voldemort), move_enemy(bellatrix), move_enemy(inheritor), move_enemy(symbiote), move_enemy(madara), move_enemy(obito), move_enemy(sullivan), move_enemy(wazowski), move_enemy(oozmakappa), move_enemy(sousky), !.
+move_enemy(Name) :- at(A,B, Name), random(-1,1,X), C is A + X, C > 0, C < 11, retract(at(_,_,Name)), asserta(at(C,B, Name)), \+ C = A, !. 
+move_enemy(Name) :- at(A,B, Name), random(-1,1,Y), C is B + Y, C > 0, C < 21, retract(at(_,_,Name)), asserta(at(A,C, Name)), !. 
