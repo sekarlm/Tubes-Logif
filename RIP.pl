@@ -426,7 +426,7 @@ save(Filename) :-
 	told, tell(Old).
 
 /* command load */
-load(Filename) :-
+loadSaved(Filename) :-
 	quit,
 	seeing(Old),
 	see(Filename),
