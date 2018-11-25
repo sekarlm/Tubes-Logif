@@ -256,7 +256,7 @@ s :- position(X,Y), F is X + 1, \+ object_loc(F,Y,dz), retract(position(_,_)), c
 s :- print('Do not move to the south or you will die!!'), nl, !.
 
 countPlaytime :- playtime(T), T1 is T+1,
-    retract(playtime(_)), asserta(playtime(T1)), setDeadzone, die, !.
+    retract(playtime(_)), asserta(playtime(T1)), setDeadzone, \+ die, !.
 
 setDeadzone :- playtime(T), F is T//20,
     X is 0+F, Y is 16-F,
