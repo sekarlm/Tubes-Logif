@@ -423,7 +423,7 @@ save(Filename) :-
 	told, tell(Old).
 
 /* command load */
-loadGame(Filename) :-
+load(Filename) :-
 	quit,
 	seeing(Old),
 	see(Filename),
