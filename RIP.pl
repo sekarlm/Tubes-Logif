@@ -436,7 +436,12 @@ attack:- position(X,Y), at(X,Y, Name), enemy(Name,H,P),
 	used_weapon(none), weapon(W,A),
 	print('You cannot attack, you dont have a weapon'),!.
 
-attack:- position(X,Y), at(X,Y, Name), enemy(Name,H,P), 
+/* Menyerang musuh */
+attack:- position(X,Y), object_loc(X,Y, Name), enemy(Name,H,P), 
+	used_weapon(none), weapon(W,A),
+	print('You cannot attack, you dont have a weapon'),!.
+
+attack:- position(X,Y), object_loc(X,Y, Name), enemy(Name,H,P), 
 	used_weapon(W), weapon(W,A),
 	H1 is H - A, retract(enemy(Name,H,P)),
 	print(Name), print(' HP dropped to '), check_health(H1), nl,
