@@ -437,7 +437,7 @@ process(end_of_file) :- !.
 process(Data) :- asserta(Data), fail.
 
 /* Menyerang musuh */
-attack:- position(X,Y), at(X,Y, Name), enemy(Name,H,P), 
+attack:- position(X,Y), object_loc(X,Y, Name), enemy(Name,H,P), 
 	used_weapon(none), weapon(W,A),
 	print('You cannot attack, you dont have a weapon'),!.
 
