@@ -196,7 +196,7 @@ quit :-
 /* command aksi dalam permainan */
 /* look -- melihat keadaan sekitar player */
 look :- cekEnemy, fail.
-look :- cekAntidote, fail.
+look :- cekFirstAid, fail.
 look :- cekbandage, fail.
 look :- cekWeapon, fail.
 look :- printMap3x3, !, !.
@@ -204,10 +204,10 @@ look :- printMap3x3, !, !.
 cekEnemy :-
     position(X,Y), object_loc(X,Y, Name), enemy(Name,_,_), write('You see '), write(Name), write('in front of you!'), nl, fail.
 cekEnemy :- !.
-cekAntidote :-
+cekFirstAid :-
     position(X,Y), object_loc(X,Y, firstaid), write('You see firstaid lying in the ground!'), nl, !.
 cekbandage :-
-    position(X,Y), object_loc(X,Y, firstaid), write('You see bandage lying in the ground!'), nl, !.
+    position(X,Y), object_loc(X,Y, bandage), write('You see bandage lying in the ground!'), nl, !.
 cekWeapon :-
     position(X,Y), object_loc(X,Y, Name), weapon(Name,_), typeofweapon(Name), !.
 /* rule untuk menentukan jenis weapon */
@@ -228,16 +228,16 @@ printPetak(P,Q) :- object_loc(P, Q, Object), medicine(Object,_), print('M'), !.
 printPetak(P,Q) :- print('-'), !.
 /* Menetapkan lokasi awal musuh di peta */
 setenemy :-
-    random(1,10,X), random(1,10,Y), asserta(object_loc(X,Y, voldemort)),
-    random(1,10,X1), random(1,10,Y1), asserta(object_loc(X1,Y1, bellatrix)),
-    random(1,10,X2), random(1,10,Y2), asserta(object_loc(X2,Y2, inheritor)),
-    random(1,10,X3), random(1,10,Y3), asserta(object_loc(X3,Y3, symbiote)),
-    random(1,10,X4), random(1,10,Y4), asserta(object_loc(X4,Y4, obito)),
-    random(1,10,X5), random(1,10,Y5), asserta(object_loc(X5,Y5, madara)),
-    random(1,10,X6), random(1,10,Y6), asserta(object_loc(X6,Y6, sullivan)),
-    random(1,10,X7), random(1,10,Y7), asserta(object_loc(X7,Y7, wazowski)),
-    random(1,10,X8), random(1,10,Y8), asserta(object_loc(X8,Y8, oozmakappa)),
-    random(1,10,X9), random(1,10,Y9), asserta(object_loc(X9,Y9, sousky)).
+    random(1,15,X), random(1,15,Y), asserta(object_loc(X,Y, voldemort)),
+    random(1,15,X1), random(1,15,Y1), asserta(object_loc(X1,Y1, bellatrix)),
+    random(1,15,X2), random(1,15,Y2), asserta(object_loc(X2,Y2, inheritor)),
+    random(1,15,X3), random(1,15,Y3), asserta(object_loc(X3,Y3, symbiote)),
+    random(1,15,X4), random(1,15,Y4), asserta(object_loc(X4,Y4, obito)),
+    random(1,15,X5), random(1,15,Y5), asserta(object_loc(X5,Y5, madara)),
+    random(1,15,X6), random(1,15,Y6), asserta(object_loc(X6,Y6, sullivan)),
+    random(1,15,X7), random(1,15,Y7), asserta(object_loc(X7,Y7, wazowski)),
+    random(1,15,X8), random(1,15,Y8), asserta(object_loc(X8,Y8, oozmakappa)),
+    random(1,15,X9), random(1,15,Y9), asserta(object_loc(X9,Y9, sousky)).
 
 /* mekanisme menggunakan barang di inventory */
 use(bandage) :-
