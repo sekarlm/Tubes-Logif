@@ -16,11 +16,12 @@
 :- dynamic(used_weapon/1).
 :- dynamic(weapon/2).
 :- dynamic(inventory/1).
+:- dynamic(inventory_cap/1).
 :- dynamic(enemy/3).
 :- dynamic(enemy_num/1).
 :- dynamic(medicine/2).
 
-init :-
+init :- 
     /* Fakta pemain */
     /* Setting awal player */
     asserta(position(7,8)), /* posisi awal player pada petak (7,8) */
@@ -29,26 +30,26 @@ init :-
     asserta(used_weapon(none)),
     asserta(inventory([])),
     asserta(inventory_cap(5)), /* kapasitas maksimum inventory adalah 5 */
-    /* Fakta peta */
+	/* Fakta peta */
     /* Deskripsi peta : */
     /* -- Petak - petak pada peta dapat diakses dengan koordinat (x,y) */
     /* -- Ukuran peta 15 x 15 */
-    /* Fakta objek-objek dalam permainan */
+	/* Fakta objek-objek dalam permainan */
     /* -- weapon(jenis,attack_power) -- */
     asserta(weapon(awm, 20)),
     asserta(weapon(groza, 18)),
-    asserta(weapon(ak47, 17),
+    asserta(weapon(ak47, 17)),
     asserta(weapon(none, 0)),
-    /* -- medicine(jenis,recovery_power) --/
-    asserta(medicine(bandage, 20)),
-    asserta(medicine(firstaid, 10)),
-		/* -- armor(jenis,jmlarmor) --/
+    /* -- medicine(jenis,recovery_power) --*/
+	asserta(medicine(bandage, 20)),
+	asserta(medicine(firstaid, 10)),
+	/* -- armor(jenis,jmlarmor) -- */
 		asserta(armor(millitaryVest,30)),
 		asserta(armor(policeVest,20)),
-		/* -- ammo(jenis,jmlammo) --/
+	/* -- ammo(jenis,jmlammo) -- */
 		asserta(ammo(dozen,12)),
 		asserta(ammo(pile,5)),
-    /* Lokasi objek di peta */
+	/* Lokasi objek di peta */
     /* -- weapon -- */
     asserta(object_loc(11, 7, awm)),
     asserta(object_loc(5, 7, awm)),
@@ -68,7 +69,7 @@ init :-
     asserta(object_loc(4, 6, ak47)),
     asserta(object_loc(8, 5, ak47)),
     asserta(object_loc(6, 1, ak47)),
-	  /* -- armor -- */
+	/* -- armor -- */
 		asserta(object_loc(2, 14, millitaryVest)),
 		asserta(object_loc(3, 4, millitaryVest)),
 		asserta(object_loc(4, 7, millitaryVest)),
@@ -88,7 +89,7 @@ init :-
 		asserta(object_loc(10, 5, policeVest)),
 		asserta(object_loc(11, 6, policeVest)),
 		asserta(object_loc(13, 10, policeVest)),
-    /* -- medicine -- */
+	/* -- medicine -- */
     asserta(object_loc(9, 6, firstaid)),
     asserta(object_loc(7, 7, firstaid)),
     asserta(object_loc(3, 9, firstaid)),
@@ -100,7 +101,7 @@ init :-
     asserta(object_loc(10, 7, bandage)),
     asserta(object_loc(9, 8, bandage)),
     asserta(object_loc(7, 8, bandage)),
-		/* -- ammo -- */
+	/* -- ammo -- */
 		asserta(object_loc(2, 5, pile)),
 		asserta(object_loc(2, 13, pile)),
 		asserta(object_loc(3, 7, pile)),
@@ -120,9 +121,7 @@ init :-
 		asserta(object_loc(11, 7, dozen)),
 		asserta(object_loc(12, 10, dozen)),
 		asserta(object_loc(13, 13, dozen)),
-
-
-    /* Fakta musuh */
+	/* Fakta musuh */
     asserta(enemy_num(10)), /* jumlah musuh */
     /* -- enemy(nama,health,attack_power) -- */
     asserta(enemy(voldemort, 40, 15)),
@@ -221,14 +220,11 @@ printMap3x3 :-
     printPetak(X,Ymin), print('P'), printPetak(X,Yplus), nl,
     printPetak(Xplus,Ymin), printPetak(Xplus,Y), printPetak(Xplus,Yplus), !.
 /* rule printPetak */
-printPetak(P,Q) :- object_loc(A, B, dz), print('X'), !.
-printPetak(P,Q) :- object_loc(A, B, Object), enemy(Object,_,_), print('E'), !.
-printPetak(P,Q) :- object_loc(A, B, Object), weapon(Object,_), print('W'), !.
-printPetak(P,Q) :- object_loc(A, B, Object), medicine(Obejct,_), print('M'), !.
+printPetak(P,Q) :- object_loc(P, Q, dz), print('X'), !.
+printPetak(P,Q) :- object_loc(P, Q, Object), enemy(Object,_,_), print('E'), !.
+printPetak(P,Q) :- object_loc(P, Q, Object), weapon(Object,_), print('W'), !.
+printPetak(P,Q) :- object_loc(P, Q, Object), medicine(Object,_), print('M'), !.
 printPetak(P,Q) :- print('-'), !.
-
-/* Mekanisme Gerak Player */
-
 /* Menetapkan lokasi awal musuh di peta */
 setenemy :-
     random(1,10,X), random(1,10,Y), asserta(object_loc(X,Y, voldemort)),
@@ -243,11 +239,10 @@ setenemy :-
     random(1,10,X9), random(1,10,Y9), asserta(object_loc(X9,Y9, sousky)).
 
 /* mekanisme menggunakan barang di inventory */
-
 use(bandage) :-
 	in_inventory(bandage),
 	inventory(L1),
-	select(X, L1, L2),
+	select(bandage, L1, L2),
 	retractall(inventory(_)),
 	asserta(inventory(L2)),
 	health(H), H1 is H + 20,
@@ -256,7 +251,7 @@ use(bandage) :-
 use(firstaid) :-
 	in_inventory(firstaid),
 	inventory(L1),
-	select(X, L1, L2),
+	select(firstaid, L1, L2),
 	retractall(inventory(_)),
 	asserta(inventory(L2)),
 	health(H), H1 is H + 10,
@@ -265,7 +260,7 @@ use(firstaid) :-
 use(millitaryVest) :-
 	in_inventory(millitaryVest),
 	inventory(L1),
-	select(X, L1, L2),
+	select(millitaryVest, L1, L2),
 	retractall(inventory(_)),
 	asserta(inventory(L2)),
 	jmlarmor(H), H1 is H + 30,
@@ -274,7 +269,7 @@ use(millitaryVest) :-
 use(policeVest) :-
 	in_inventory(policeVest),
 	inventory(L1),
-	select(X, L1, L2),
+	select(policeVest, L1, L2),
 	retractall(inventory(_)),
 	asserta(inventory(L2)),
 	jmlarmor(H), H1 is H + 20,
@@ -301,7 +296,7 @@ use(X) :-
 use(pile) :-
 	in_inventory(pile),
 	inventory(L1),
-	select(X, L1, L2),
+	select(pile, L1, L2),
 	retractall(inventory(_)),
 	asserta(inventory(L2)),
 	jmlammo(H), H1 is H + 5,
@@ -310,7 +305,7 @@ use(pile) :-
 use(dozen) :-
 	in_inventory(dozen),
 	inventory(L1),
-	select(X, L1, L2),
+	select(dozen, L1, L2),
 	retractall(inventory(_)),
 	asserta(inventory(L2)),
 	jmlammo(H), H1 is H + 12,
@@ -324,5 +319,3 @@ status :-
 	inventory(L), print('Inventory : '), print(L), nl,
 	enemy_num(E), print('Enemy left : '), print(E), nl,
 	fail.
-
-    
