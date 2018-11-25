@@ -258,10 +258,12 @@ s :- print('Do not move to the south or you will die!!'), nl, !.
 countPlaytime :- playtime(T), T1 is T+1,
     retract(playtime(_)), asserta(playtime(T1)), setDeadzone, die, !.
 
-setDeadzone :- playtime(T), mod(T,20) =:= 0, F is T/20,
+setDeadzone :- playtime(T), F is T//20,
     X is 0+F, Y is 16-F,
     retract(object_loc(X,_,_)), retract(object_loc(_,Y,_)),
-    asserta(object_loc(X,_,dz)), asserta(object_loc(_,Y,dz)), !.
+    asserta(object_loc(X,_,dz)), asserta(object_loc(_,Y,dz)),
+	asserta(object_loc(_,X,dz)), asserta(object_loc(Y,_,dz)), !.
+
 
 /* map - Menampilkan peta */
 
@@ -356,16 +358,6 @@ status :-
 	fail.
 
 /* Kondisi kalah */
-/* Map */
-map :- printMap(0,0), !.
-/* Kasus khusus */
-printMap(16,17) :- print(' '), !.
-printMap(X,17) :- print(' '), nl, !, F is X+1, printMap(F, 0).
-/* Kasus umum */
-printMap(X,Y) :- position(X,Y), print('P'), !, F is Y+1, printMap(X,F).
-printMap(X,Y) :- object_loc(X,Y, dz), print('X'), !, F is Y+1, printMap(X,F).
-printMap(X,Y) :- object_loc(X,Y, Objek), enemy(Objek,_,_), print('E'), !, F is Y+1, printMap(X,F).
-printMap(X,Y) :- print('-'), F is Y + 1, printMap(X,F).
 
 /*Kelola Inventory*/
 /*in_inventory untuk ngecek apakah barangnya ada di inventory atau nggak*/
@@ -379,14 +371,14 @@ putInInvent(X,Y,Object):-
 	inventory(L),length(L,Z),inventory_cap(N),L<N,
 	retract(inventory(_)),
 	retract(object_loc(X,Y,Object)),
-	print("Add "),print(Obejct),(" to inventory."),nl,
+	print("Add "),print(Obejct),("to inventory."),nl,
 	asserta(inventory(Object|L)),
 	movEnemy,
 	countPlaytime,!.
 /*Kasus inventory penuh*/
 putInInvent(X,Y,Object):-
 	inventory(L),length(L,Z),inventory_cap(N),L=N,
-	print("Can't add the "),print(Object),print(" to inventory."),nl,!.
+	print("Can't add the "),print(Object),print("to inventory."),nl,!.
 	
 /*Take(Object) untuk ambil object yang sepetak dengan player*/
 take(Object):-
@@ -399,18 +391,8 @@ take(Object):-
 	putInInvent(X,Y,Object).
 take(Object):-
 	/*else, Gaada object*/
-	print("There's no any "),print(Object),print(" detected"),!.
-
-/* -- command drop -- */
-drop(Object) :-
-	position(X,Y), in_inventory(Object),
-	inventory(L1),
-	select(Object, L1, L2),
-	asserta(object_loc(X,Y, Object)),
-	retractall(inventory(_)),
-	asserta(inventory(L2)),
-	print('Kamu meletakkan '), print(Object), movenemy, !.
-
+	print("There's no any "),print(Object),print("detected"),!.
+	
 /* Map */
 map :- printMap(0,0), !.
 /* Kasus khusus */
