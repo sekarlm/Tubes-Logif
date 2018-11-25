@@ -379,14 +379,14 @@ putInInvent(X,Y,Object):-
 	inventory(L),length(L,Z),inventory_cap(N),L<N,
 	retract(inventory(_)),
 	retract(object_loc(X,Y,Object)),
-	print("Add "),print(Obejct),("to inventory."),nl,
+	print("Add "),print(Obejct),(" to inventory."),nl,
 	asserta(inventory(Object|L)),
 	movEnemy,
 	countPlaytime,!.
 /*Kasus inventory penuh*/
 putInInvent(X,Y,Object):-
 	inventory(L),length(L,Z),inventory_cap(N),L=N,
-	print("Can't add the "),print(Object),print("to inventory."),nl,!.
+	print("Can't add the "),print(Object),print(" to inventory."),nl,!.
 	
 /*Take(Object) untuk ambil object yang sepetak dengan player*/
 take(Object):-
@@ -399,7 +399,7 @@ take(Object):-
 	putInInvent(X,Y,Object).
 take(Object):-
 	/*else, Gaada object*/
-	print("There's no any "),print(Object),print("detected"),!.
+	print("There's no any "),print(Object),print(" detected"),!.
 	
 /* Map */
 map :- printMap(0,0), !.
