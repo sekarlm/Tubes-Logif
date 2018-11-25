@@ -482,7 +482,7 @@ die :- health(A), A < 1,
 	quit, fail, !.
 
 die :- position(X,Y), object_loc(X,Y, dz),
-	print('You are in the deadzone, you are dead.'), nl.
+	print('You are in the deadzone, you are dead.'), nl,
 	quit, fail, !.
 
 die :- !.
