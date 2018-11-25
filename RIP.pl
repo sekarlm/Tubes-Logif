@@ -382,11 +382,11 @@ putInInvent(X,Y,Object):-
 /*Take(Object) untuk ambil object yang sepetak dengan player*/
 take(Object):-
 	/*Object=Enemy*/
-	position(X,Y),object_loc(X,Y),enemy(Object,_,_),
+	position(X,Y),object_loc(X,Y,Object),enemy(Object,_,_),
 	print("Can't invent the object. It's your enemy, attack it!"),!.
 take(Object):-
 	/*Object tepat*/
-	position(X,Y),object_loc(X,Y),!,
+	position(X,Y),object_loc(X,Y,Object),!,
 	putInInvent(X,Y,Object).
 take(Object):-
 	/*else, Gaada object*/
