@@ -388,7 +388,7 @@ take(Object):-
 	put_in_invent(X,Y,Object).
 take(Object):-
 	/*else, Gaada object*/
-	print("There's no any "),print(Object),print("detected"),!.
+	print('There is no any '),print(Object),print(' detected'),!.
 
 drop(Object) :-
 	position(X,Y), in_inventory(Object),
