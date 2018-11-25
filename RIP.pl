@@ -28,6 +28,7 @@ init :-
     asserta(health(100)),
 		asserta(jmlarmor(0)),
     asserta(used_weapon(none)),
+    asserta(jmlammo(0)),
     asserta(inventory([])),
     asserta(inventory_cap(5)), /* kapasitas maksimum inventory adalah 5 */
 	/* Fakta peta */
