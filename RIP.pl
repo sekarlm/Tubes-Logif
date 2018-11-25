@@ -392,7 +392,16 @@ take(Object):-
 take(Object):-
 	/*else, Gaada object*/
 	print("There's no any "),print(Object),print("detected"),!.
-	
+
+drop(Object) :-
+	position(X,Y), in_inventory(Object),
+	inventory(L1),
+	select(Object, L1, L2),
+	asserta(object_loc(X,Y, Object)),
+	retractall(inventory(_)),
+	asserta(inventory(L2)),
+	print('Kamu meletakkan '), print(Object), movenemy, !.
+
 /* Map */
 map :- printMap(0,0), !.
 /* Kasus khusus */
