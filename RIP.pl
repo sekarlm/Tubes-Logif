@@ -366,17 +366,17 @@ in_inventory(X):-
 /*PutInInvent untuk taruh barang yang diambil ke dalam inventory*/
 putInInvent(X,Y,Object):-
 /*Masih ada tempat di inventory*/
-	inventory(L),length(L,Z),inventory_cap(N),L<N,
+	inventory(L),length(L,Z),inventory_cap(N),Z<N,
 	retract(inventory(_)),
 	retract(object_loc(X,Y,Object)),
-	print("Add "),print(Obejct),("to inventory."),nl,
+	print("Add "),print(Obejct),(" to inventory."),nl,
 	asserta(inventory(Object|L)),
 	movenemy,
 	countPlaytime,!.
 /*Kasus inventory penuh*/
 putInInvent(X,Y,Object):-
-	inventory(L),length(L,Z),inventory_cap(N),L=N,
-	print("Can't add the "),print(Object),print("to inventory."),nl,!.
+	inventory(L),length(L,Z),inventory_cap(N),Z=N,
+	print("Can't add the "),print(Object),print(" to inventory."),nl,!.
 	
 /*Take(Object) untuk ambil object yang sepetak dengan player*/
 take(Object):-
