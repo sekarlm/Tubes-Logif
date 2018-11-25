@@ -366,16 +366,13 @@ in_inventory(X):-
 	
 /*PutInInvent untuk taruh barang yang diambil ke dalam inventory*/
 /*Masih ada tempat di inventory*/
-putInInvent(X,Y,Object):-
-	inventory(L),length(L,Z),Z<5,
+put_in_inventory(X,Y,Object) :- inventory(L), length(L,Z), Z < 5, 
 	retract(inventory(_)),
 	retract(object_loc(X,Y,Object)),
-	print("Add "),print(Obejct),(" to inventory."),nl,
-	asserta(inventory([Object|L])),
-	movenemy,
-	countPlaytime,!.
+	print('Add '), print(Object), print(' to inventory.'), nl,
+	asserta(inventory([Object|L])), movenemy,countPlaytime,!.
 /*Kasus inventory penuh*/
-putInInvent(X,Y,Object):-
+put_in_invent(X,Y,Object):-
 	inventory(L),length(L,Z),Z=5,
 	print("Can't add the "),print(Object),print(" to inventory."),nl,!.
 	
@@ -387,7 +384,7 @@ take(Object):-
 take(Object):-
 	/*Object tepat*/
 	position(X,Y),object_loc(X,Y,Object),!,
-	putInInvent(X,Y,Object).
+	put_in_invent(X,Y,Object).
 take(Object):-
 	/*else, Gaada object*/
 	print("There's no any "),print(Object),print("detected"),!.
