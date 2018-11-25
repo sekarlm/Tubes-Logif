@@ -260,7 +260,8 @@ countPlaytime :- playtime(T), T1 is T+1,
 
 /* mekanisme menggunakan barang di inventory */
 use(bandage) :-
-	in_inventory(bandage),
+	countPlaytime,
+    in_inventory(bandage),
 	inventory(L1),
 	select(bandage, L1, L2),
 	retractall(inventory(_)),
@@ -269,7 +270,8 @@ use(bandage) :-
 	retract((_)), asserta((H1)), !.
 
 use(firstaid) :-
-	in_inventory(firstaid),
+	countPlaytime,
+    in_inventory(firstaid),
 	inventory(L1),
 	select(firstaid, L1, L2),
 	retractall(inventory(_)),
@@ -278,7 +280,8 @@ use(firstaid) :-
 	retract((_)), asserta((H1)), !.
 
 use(millitaryVest) :-
-	in_inventory(millitaryVest),
+	countPlaytime,
+    in_inventory(millitaryVest),
 	inventory(L1),
 	select(millitaryVest, L1, L2),
 	retractall(inventory(_)),
@@ -287,7 +290,8 @@ use(millitaryVest) :-
 	retract((_)), asserta((H1)), !.
 
 use(policeVest) :-
-	in_inventory(policeVest),
+	countPlaytime,
+    in_inventory(policeVest),
 	inventory(L1),
 	select(policeVest, L1, L2),
 	retractall(inventory(_)),
@@ -296,7 +300,8 @@ use(policeVest) :-
 	retract((_)), asserta((H1)), !.
 
 use(X) :-
-	used_weapon(none),
+	countPlaytime,
+    used_weapon(none),
 	weapon(X,_),
 	inventory(L1),
 	select(X, L1, L2),
@@ -305,7 +310,8 @@ use(X) :-
 	asserta(inventory(L2)), !.
 
 use(X) :-
-	in_inventory(X),
+	countPlaytime,
+    in_inventory(X),
 	weapon(X,_),
 	inventory(L1),
 	select(X, L1, L2),
@@ -314,7 +320,8 @@ use(X) :-
 	asserta(inventory([W|L2])), !.
 
 use(pile) :-
-	in_inventory(pile),
+	countPlaytime,
+    in_inventory(pile),
 	inventory(L1),
 	select(pile, L1, L2),
 	retractall(inventory(_)),
@@ -323,7 +330,8 @@ use(pile) :-
 	retract((_)), asserta((H1)), !.
 
 use(dozen) :-
-	in_inventory(dozen),
+	countPlaytime,
+    in_inventory(dozen),
 	inventory(L1),
 	select(dozen, L1, L2),
 	retractall(inventory(_)),
