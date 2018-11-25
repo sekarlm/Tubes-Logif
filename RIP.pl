@@ -354,8 +354,8 @@ status :-
 	used_weapon(W), print('Weapon: '), print(W), nl,
 	jmlarmor(Ar), print('Armor : '), print(Ar), nl,
 	jmlammo(A), print('Ammo : '), print(A), nl,
-	inventory(L), print('Inventory : '), print(L), nl,
 	enemy_num(E), print('Enemy left : '), print(E), nl,
+	inventory(L), print('Inventory : '), print(L), nl,
 	fail.
 
 /*Kelola Inventory*/
