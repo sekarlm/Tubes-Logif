@@ -431,3 +431,28 @@ loadGame(Filename) :-
 process(end_of_file) :- !.
 process(Data) :- asserta(Data), fail.
 
+/* Menyerang musuh */
+attack:- position(X,Y), at(X,Y, Name), enemy(Name,H,P), 
+	used_weapon(none), weapon(W,A),
+	print('You cannot attack, you dont have a weapon'),!.
+
+attack:- position(X,Y), at(X,Y, Name), enemy(Name,H,P), 
+	used_weapon(W), weapon(W,A),
+	H1 is H - A, retract(enemy(Name,H,P)),
+	print(Name), print(' HP dropped to '), check_health(H1), nl,
+	asserta(enemy(Name,H1,P)), checkdeath(Name),
+	H1 > 0, retaliate(P), fail.
+
+attack :- !.
+
+check_health(A) :- A < 1, print('0'), !.
+check_health(A) :- print(A), !.
+
+/* Mekanisme kematian musuh */
+checkdeath(X) :- enemy(X, A, _), A < 1, retract(enemy(X,_,_)),
+	print(X), print(' is dead.'), nl,
+	retract(at(_,_,X)), enemy_num(B), retract(enemy_num(_)), B1 is B - 1, asserta(enemy_num(B1)), checkvictory, !. 
+checkdeath(A) :- !.
+
+/* Kondisi menang */
+checkvictory :- enemy_num(0), print('Congratulations, you win the game, you truly are the King of Knights!'), nl, quit, !.
