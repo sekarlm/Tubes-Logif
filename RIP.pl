@@ -9,6 +9,10 @@
 :- dynamic(object_loc/3).
 :- dynamic(position/2).
 :- dynamic(health/1).
+:- dynamic(jmlarmor/1).
+:- dynamic(armor/2).
+:- dynamic(jmlammo/1).
+:- dynamic(ammo/2).
 :- dynamic(used_weapon/1).
 :- dynamic(weapon/2).
 :- dynamic(inventory/1).
@@ -21,6 +25,7 @@ init :-
     /* Setting awal player */
     asserta(position(7,8)), /* posisi awal player pada petak (7,8) */
     asserta(health(100)),
+		asserta(jmlarmor(0)),
     asserta(used_weapon(none)),
     asserta(inventory([])),
     asserta(inventory_cap(5)), /* kapasitas maksimum inventory adalah 5 */
@@ -33,50 +38,90 @@ init :-
     asserta(weapon(awm, 20)),
     asserta(weapon(groza, 18)),
     asserta(weapon(ak47, 17),
-    asserta(weapon(firegun, 15)),
-    asserta(weapon(kashu, 14)),
-    asserta(weapon(shushui, 11)),
-    asserta(weapon(katana, 8)),
-    asserta(weapon(bayonet, 7)),
-    asserta(weapon(karambit, 5)),
-    asserta(weapon(machette, 3)),
     asserta(weapon(none, 0)),
     /* -- medicine(jenis,recovery_power) --/
-    asserta(medicine(holyWater, 20)),
-    asserta(medicine(antidote, 10)),
+    asserta(medicine(bandage, 20)),
+    asserta(medicine(firstaid, 10)),
+		/* -- armor(jenis,jmlarmor) --/
+		asserta(armor(millitaryVest,30)),
+		asserta(armor(policeVest,20)),
+		/* -- ammo(jenis,jmlammo) --/
+		asserta(ammo(dozen,12)),
+		asserta(ammo(pile,5)),
     /* Lokasi objek di peta */
     /* -- weapon -- */
     asserta(object_loc(11, 7, awm)),
     asserta(object_loc(5, 7, awm)),
+		asserta(object_loc(10, 10, awm)),
+		asserta(object_loc(5, 3, awm)),
+		asserta(object_loc(13, 12, awm)),
+		asserta(object_loc(7, 3, awm)),
+		asserta(object_loc(11, 9, groza)),
+		asserta(object_loc(4, 7, groza)),
     asserta(object_loc(8, 2, groza)),
     asserta(object_loc(13, 5, groza)),
+		asserta(object_loc(11, 9, groza)),
+		asserta(object_loc(2, 11, groza)),
     asserta(object_loc(6, 8, ak47)),
     asserta(object_loc(7, 12, ak47)),
-    asserta(object_loc(11, 9, firegun)),
-    asserta(object_loc(2, 11, firegun)),
-    asserta(object_loc(10, 10, kashu)),
-    asserta(object_loc(5, 3, kashu)),
-    asserta(object_loc(9, 14, shushui)),
-    asserta(object_loc(3, 8, katana)),
-    asserta(object_loc(4, 6, katana)),
-    asserta(object_loc(13, 12, bayonet)),
-    asserta(object_loc(7, 3, bayonet)),
-    asserta(object_loc(11, 9, karambit)),
-    asserta(object_loc(4, 7, karambit)),
-    asserta(object_loc(8, 5, machette)),
-    asserta(object_loc(6, 1, machette)),
+    asserta(object_loc(3, 8, ak47)),
+    asserta(object_loc(4, 6, ak47)),
+    asserta(object_loc(8, 5, ak47)),
+    asserta(object_loc(6, 1, ak47)),
+	  /* -- armor -- */
+		asserta(object_loc(2, 14, millitaryVest)),
+		asserta(object_loc(3, 4, millitaryVest)),
+		asserta(object_loc(4, 7, millitaryVest)),
+		asserta(object_loc(5, 13, millitaryVest)),
+		asserta(object_loc(6, 2, millitaryVest)),
+		asserta(object_loc(7, 10, millitaryVest)),
+		asserta(object_loc(9, 5, millitaryVest)),
+		asserta(object_loc(10, 6, millitaryVest)),
+		asserta(object_loc(12, 8, millitaryVest)),
+		asserta(object_loc(13, 11, millitaryVest)),
+		asserta(object_loc(14, 9, millitaryVest)),
+		asserta(object_loc(2, 3, policeVest)),
+		asserta(object_loc(4, 7, policeVest)),
+		asserta(object_loc(5, 13, policeVest)),
+		asserta(object_loc(7, 7, policeVest)),
+		asserta(object_loc(8, 4, policeVest)),
+		asserta(object_loc(10, 5, policeVest)),
+		asserta(object_loc(11, 6, policeVest)),
+		asserta(object_loc(13, 10, policeVest)),
     /* -- medicine -- */
-    asserta(object_loc(9, 6, antidote)),
-    asserta(object_loc(7, 7, antidote)),
-    asserta(object_loc(3, 9, antidote)),
+    asserta(object_loc(9, 6, firstaid)),
+    asserta(object_loc(7, 7, firstaid)),
+    asserta(object_loc(3, 9, firstaid)),
     asserta(object_loc(4, 7, antodote)),
-    asserta(object_loc(10, 8, antidote)),
-    asserta(object_loc(5, 7, holyWater)),
-    asserta(object_loc(8, 6, holyWater)),
-    asserta(object_loc(3, 11, holyWater)),
-    asserta(object_loc(10, 7, holyWater)),
-    asserta(object_loc(9, 8, holyWater)),
-    asserta(object_loc(7, 8, holyWater)),
+    asserta(object_loc(10, 8, firstaid)),
+    asserta(object_loc(5, 7, bandage)),
+    asserta(object_loc(8, 6, bandage)),
+    asserta(object_loc(3, 11, bandage)),
+    asserta(object_loc(10, 7, bandage)),
+    asserta(object_loc(9, 8, bandage)),
+    asserta(object_loc(7, 8, bandage)),
+		/* -- ammo -- */
+		asserta(object_loc(2, 5, pile)),
+		asserta(object_loc(2, 13, pile)),
+		asserta(object_loc(3, 7, pile)),
+		asserta(object_loc(4, 8, pile)),
+		asserta(object_loc(5, 9, pile)),
+		asserta(object_loc(7, 10, pile)),
+		asserta(object_loc(8, 3, pile)),
+		asserta(object_loc(9, 13, pile)),
+		asserta(object_loc(10, 6, pile)),
+		asserta(object_loc(12, 11, pile)),
+		asserta(object_loc(13, 2, pile)),
+		asserta(object_loc(14, 12, pile)),
+		asserta(object_loc(3, 11, dozen)),
+		asserta(object_loc(4, 3, dozen)),
+		asserta(object_loc(6, 12, dozen)),
+		asserta(object_loc(7, 4, dozen)),
+		asserta(object_loc(11, 7, dozen)),
+		asserta(object_loc(12, 10, dozen)),
+		asserta(object_loc(13, 13, dozen)),
+
+
     /* Fakta musuh */
     asserta(enemy_num(10)), /* jumlah musuh */
     /* -- enemy(nama,health,attack_power) -- */
@@ -93,9 +138,9 @@ init :-
 
 /* Aturan Penalaran */
 /* start -- untuk memulai permainan */
-start :- 
+start :-
     retractall(object_loc(_,_,_)), retractall(position(_)),
-    retractall(health(_)), 
+    retractall(health(_)),
     retractall(used_weapon(_)), retractall(weapon(_,_)),
     retractall(inventory(_)),
     retractall(enemy(_,_,_)), retractall(enemy_num(_)),
@@ -140,7 +185,7 @@ help :-
     write('X : inaccessible').
 
 /* quit -- untuk mengakhiri game */
-quit :- 
+quit :-
     write('Leaving the bettlefield'), nl,
     retractall(object_loc(_,_,_)), retractall(position(_)),
     retractall(health(_)),
@@ -152,31 +197,24 @@ quit :-
 /* look -- melihat keadaan sekitar player */
 look :- cekEnemy, fail.
 look :- cekAntidote, fail.
-look :- cekholyWater, fail.
+look :- cekbandage, fail.
 look :- cekWeapon, fail.
 look :- printMap3x3, !, !.
 /* rule terkait command look */
-cekEnemy :- 
+cekEnemy :-
     position(X,Y), object_loc(X,Y, Name), enemy(Name,_,_), write('You see '), write(Name), write('in front of you!'), nl, fail.
 cekEnemy :- !.
 cekAntidote :-
-    position(X,Y), object_loc(X,Y, antidote), write('You see antidote lying in the ground!'), nl, !.
-cekholyWater :-
-    position(X,Y), object_loc(X,Y, antidote), write('You see holyWater lying in the ground!'), nl, !.
+    position(X,Y), object_loc(X,Y, firstaid), write('You see firstaid lying in the ground!'), nl, !.
+cekbandage :-
+    position(X,Y), object_loc(X,Y, firstaid), write('You see bandage lying in the ground!'), nl, !.
 cekWeapon :-
     position(X,Y), object_loc(X,Y, Name), weapon(Name,_), typeofweapon(Name), !.
 /* rule untuk menentukan jenis weapon */
 typeofweapon(Name) :- Name = awm, write('You see an awm lying in the ground!'), nl, !.
 typeofweapon(Name) :- Name = groza, write('You see a groza lying in the ground!'), nl, !.
 typeofweapon(Name) :- Name = ak47, write('You see an ak47 lying in the ground!'), nl, !.
-typeofweapon(Name) :- Name = firegun, write('You see a firegun lying in the ground!'), nl, !.
-typeofweapon(Name) :- Name = kashu, write('You see a kashu lying in the ground!'), nl, !.
-typeofweapon(Name) :- Name = shushui, write('You see a shushui lying in the ground!'), nl, !.
-typeofweapon(Name) :- Name = katana, write('You see a katana lying in the ground!'), nl, !.
-typeofweapon(Name) :- Name = bayonet, write('You see a bayonet lying in the ground!'), nl, !.
-typeofweapon(Name) :- Name = karambit, write('You see a karambit lying in the ground!'), nl, !.
-typeofweapon(Name) :- Name = machette, write('You see a machette lying in the ground!'), nl, !.
-printMap3x3 :- 
+printMap3x3 :-
     position(X,Y),
     Xmin is X-1, Xplus is X+1, Ymin is Y-1, Yplus is Y+1,
     printPetak(Xmin,Ymin), printPetak(Xmin,Y), printPetak(Xmin,Yplus), nl,
@@ -203,4 +241,88 @@ setenemy :-
     random(1,10,X7), random(1,10,Y7), asserta(object_loc(X7,Y7, wazowski)),
     random(1,10,X8), random(1,10,Y8), asserta(object_loc(X8,Y8, oozmakappa)),
     random(1,10,X9), random(1,10,Y9), asserta(object_loc(X9,Y9, sousky)).
+
+/* mekanisme menggunakan barang di inventory */
+
+use(bandage) :-
+	in_inventory(bandage),
+	inventory(L1),
+	select(X, L1, L2),
+	retractall(inventory(_)),
+	asserta(inventory(L2)),
+	health(H), H1 is H + 20,
+	retract((_)), asserta((H1)), !.
+
+use(firstaid) :-
+	in_inventory(firstaid),
+	inventory(L1),
+	select(X, L1, L2),
+	retractall(inventory(_)),
+	asserta(inventory(L2)),
+	health(H), H1 is H + 10,
+	retract((_)), asserta((H1)), !.
+
+use(millitaryVest) :-
+	in_inventory(millitaryVest),
+	inventory(L1),
+	select(X, L1, L2),
+	retractall(inventory(_)),
+	asserta(inventory(L2)),
+	jmlarmor(H), H1 is H + 30,
+	retract((_)), asserta((H1)), !.
+
+use(policeVest) :-
+	in_inventory(policeVest),
+	inventory(L1),
+	select(X, L1, L2),
+	retractall(inventory(_)),
+	asserta(inventory(L2)),
+	jmlarmor(H), H1 is H + 20,
+	retract((_)), asserta((H1)), !.
+
+use(X) :-
+	used_weapon(none),
+	weapon(X,_),
+	inventory(L1),
+	select(X, L1, L2),
+	retractall(inventory(_)),
+	retract(used_weapon(_)), asserta(used_weapon(X)),
+	asserta(inventory(L2)), !.
+
+use(X) :-
+	in_inventory(X),
+	weapon(X,_),
+	inventory(L1),
+	select(X, L1, L2),
+	retractall(inventory(_)),
+	used_weapon(W), retract(used_weapon(_)), asserta(used_weapon(X)),
+	asserta(inventory([W|L2])), !.
+
+use(pile) :-
+	in_inventory(pile),
+	inventory(L1),
+	select(X, L1, L2),
+	retractall(inventory(_)),
+	asserta(inventory(L2)),
+	jmlammo(H), H1 is H + 5,
+	retract((_)), asserta((H1)), !.
+
+use(dozen) :-
+	in_inventory(dozen),
+	inventory(L1),
+	select(X, L1, L2),
+	retractall(inventory(_)),
+	asserta(inventory(L2)),
+	jmlammo(H), H1 is H + 12,
+	retract((_)), asserta((H1)), !.
+
+/* status - menampilkan keadaan player saat ini */
+status :-
+	health(H), print('Health: '), print(H), nl,
+	used_weapon(W), print('Weapon: '), print(W), nl,
+	jmlammo(A), print('Ammo : '), print(A), nl,
+	inventory(L), print('Inventory : '), print(L), nl,
+	enemy_num(E), print('Enemy left : '), print(E), nl,
+	fail.
+
     
