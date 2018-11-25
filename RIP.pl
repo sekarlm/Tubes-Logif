@@ -370,7 +370,7 @@ putInInvent(X,Y,Object):-
 	retract(inventory(_)),
 	retract(object_loc(X,Y,Object)),
 	print("Add "),print(Obejct),(" to inventory."),nl,
-	asserta(inventory(Object|L)),
+	asserta(inventory([Object|L])),
 	movenemy,
 	countPlaytime,!.
 /*Kasus inventory penuh*/
