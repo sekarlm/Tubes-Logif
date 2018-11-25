@@ -276,7 +276,7 @@ use(bandage) :-
 	retractall(inventory(_)),
 	asserta(inventory(L2)),
 	health(H), H1 is H + 20,
-	retract((_)), asserta((H1)), !.
+	retract(health(_)), asserta(health(H1)), !.
 
 use(firstaid) :-
 	countPlaytime,
@@ -286,7 +286,7 @@ use(firstaid) :-
 	retractall(inventory(_)),
 	asserta(inventory(L2)),
 	health(H), H1 is H + 10,
-	retract((_)), asserta((H1)), !.
+	retract(health(_)), asserta(health(H1)), !.
 
 use(millitaryVest) :-
 	countPlaytime,
@@ -296,7 +296,7 @@ use(millitaryVest) :-
 	retractall(inventory(_)),
 	asserta(inventory(L2)),
 	jmlarmor(H), H1 is H + 30,
-	retract((_)), asserta((H1)), !.
+	retract(jmlarmor(_)), asserta(jmlarmor(H1)), !.
 
 use(policeVest) :-
 	countPlaytime,
@@ -306,7 +306,7 @@ use(policeVest) :-
 	retractall(inventory(_)),
 	asserta(inventory(L2)),
 	jmlarmor(H), H1 is H + 20,
-	retract((_)), asserta((H1)), !.
+	retract(jmlarmor(_)), asserta(jmlarmor(H1)), !.
 
 use(X) :-
 	countPlaytime,
@@ -336,7 +336,7 @@ use(pile) :-
 	retractall(inventory(_)),
 	asserta(inventory(L2)),
 	jmlammo(H), H1 is H + 5,
-	retract((_)), asserta((H1)), !.
+	retract(jmlammo(_)), asserta(jmlammo(H1)), !.
 
 use(dozen) :-
 	countPlaytime,
@@ -346,8 +346,8 @@ use(dozen) :-
 	retractall(inventory(_)),
 	asserta(inventory(L2)),
 	jmlammo(H), H1 is H + 12,
-	retract((_)), asserta((H1)), !.
-
+	retract(jmlammo(_)), asserta(jmlammo(H1)), !.
+	
 /* status - menampilkan keadaan player saat ini */
 status :-
 	health(H), print('Health: '), print(H), nl,
