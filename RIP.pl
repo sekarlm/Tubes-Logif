@@ -473,8 +473,8 @@ checkvictory :- enemy_num(0), print('Congratulations, you win the game, you trul
 
 /* Pergerakan musuh */
 movenemy :- move_enemy(voldemort), move_enemy(bellatrix), move_enemy(inheritor), move_enemy(symbiote), move_enemy(madara), move_enemy(obito), move_enemy(sullivan), move_enemy(wazowski), move_enemy(oozmakappa), move_enemy(sousky), !.
-move_enemy(Name) :- object_loc(A,B, Name), random(-1,1,X), C is A + X, C > 0, C < 16, retract(at(_,_,Name)), asserta(at(C,B, Name)), \+ C = A, !.
-move_enemy(Name) :- object_loc(A,B, Name), random(-1,1,Y), C is B + Y, C > 0, C < 16, retract(at(_,_,Name)), asserta(at(A,C, Name)), !.
+move_enemy(Name) :- object_loc(A,B, Name), random(-1,1,X), C is A + X, C > 0, C < 16, retract(object_loc(_,_,Name)), asserta(object_loc(C,B, Name)), \+ C = A, !.
+move_enemy(Name) :- object_loc(A,B, Name), random(-1,1,Y), C is B + Y, C > 0, C < 16, retract(object_loc(_,_,Name)), asserta(object_loc(A,C, Name)), !.
 
 /* kondisi habis nyawa */
 die :- health(A), A < 1,
