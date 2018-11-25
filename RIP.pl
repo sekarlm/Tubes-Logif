@@ -483,3 +483,9 @@ die :- position(X,Y), object_loc(X,Y, dz),
 	quit, fail, !.
 
 die :- !.
+
+retaliate(P) :- 
+	health(X), X1 is X - P,
+	retractall(health(_)),
+	print('Your HP dropped to '), print(X1), nl,
+	asserta(health(X1)), die, !.
