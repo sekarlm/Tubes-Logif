@@ -20,6 +20,7 @@
 :- dynamic(enemy/3).
 :- dynamic(enemy_num/1).
 :- dynamic(medicine/2).
+:- dynamic(playtime/1).
 
 init :- 
     /* Fakta pemain */
@@ -31,7 +32,8 @@ init :-
     asserta(jmlammo(0)),
     asserta(inventory([])),
     asserta(inventory_cap(5)), /* kapasitas maksimum inventory adalah 5 */
-	/* Fakta peta */
+	asserta(playtime(0)),
+    /* Fakta peta */
     /* Deskripsi peta : */
     /* -- Petak - petak pada peta dapat diakses dengan koordinat (x,y) */
     /* -- Ukuran peta 15 x 15 */
@@ -184,6 +186,19 @@ help :-
     write('_ : accescible'),nl,
     write('X : inaccessible').
 
+/* Menetapkan lokasi awal musuh di peta */
+setenemy :-
+    random(1,15,X), random(1,15,Y), asserta(object_loc(X,Y, voldemort)),
+    random(1,15,X1), random(1,15,Y1), asserta(object_loc(X1,Y1, bellatrix)),
+    random(1,15,X2), random(1,15,Y2), asserta(object_loc(X2,Y2, inheritor)),
+    random(1,15,X3), random(1,15,Y3), asserta(object_loc(X3,Y3, symbiote)),
+    random(1,15,X4), random(1,15,Y4), asserta(object_loc(X4,Y4, obito)),
+    random(1,15,X5), random(1,15,Y5), asserta(object_loc(X5,Y5, madara)),
+    random(1,15,X6), random(1,15,Y6), asserta(object_loc(X6,Y6, sullivan)),
+    random(1,15,X7), random(1,15,Y7), asserta(object_loc(X7,Y7, wazowski)),
+    random(1,15,X8), random(1,15,Y8), asserta(object_loc(X8,Y8, oozmakappa)),
+    random(1,15,X9), random(1,15,Y9), asserta(object_loc(X9,Y9, sousky)).
+
 /* quit -- untuk mengakhiri game */
 quit :-
     write('Leaving the bettlefield'), nl,
@@ -226,18 +241,22 @@ printPetak(P,Q) :- object_loc(P, Q, Object), enemy(Object,_,_), print('E'), !.
 printPetak(P,Q) :- object_loc(P, Q, Object), weapon(Object,_), print('W'), !.
 printPetak(P,Q) :- object_loc(P, Q, Object), medicine(Object,_), print('M'), !.
 printPetak(P,Q) :- print('-'), !.
-/* Menetapkan lokasi awal musuh di peta */
-setenemy :-
-    random(1,15,X), random(1,15,Y), asserta(object_loc(X,Y, voldemort)),
-    random(1,15,X1), random(1,15,Y1), asserta(object_loc(X1,Y1, bellatrix)),
-    random(1,15,X2), random(1,15,Y2), asserta(object_loc(X2,Y2, inheritor)),
-    random(1,15,X3), random(1,15,Y3), asserta(object_loc(X3,Y3, symbiote)),
-    random(1,15,X4), random(1,15,Y4), asserta(object_loc(X4,Y4, obito)),
-    random(1,15,X5), random(1,15,Y5), asserta(object_loc(X5,Y5, madara)),
-    random(1,15,X6), random(1,15,Y6), asserta(object_loc(X6,Y6, sullivan)),
-    random(1,15,X7), random(1,15,Y7), asserta(object_loc(X7,Y7, wazowski)),
-    random(1,15,X8), random(1,15,Y8), asserta(object_loc(X8,Y8, oozmakappa)),
-    random(1,15,X9), random(1,15,Y9), asserta(object_loc(X9,Y9, sousky)).
+
+/* Mekanisme gerakan pemain */
+w :- position(X,Y), F is Y-1, \+ object_loc(X,F,dz), retract(position(_,_)), countPlaytime, !, asserta(position(X,F)), print('You moved to the west.'), nl, !, movEnemy, !.
+w :- print('Do not move to the west or you will die!!'), nl, !.
+
+e :- position(X,Y), F is Y+1, \+ object_loc(X,F,dz), retract(position(_,_)), countPlaytime, !, asserta(position(X,F)), print('You moved to the west.'), nl, !, movEnemy, !.
+e :- print('Do not move to the east or you will die!!'), nl, !.
+
+n :- position(X,Y), F is X-1, \+ object_loc(F,Y,dz), retract(position(_,_)), countPlaytime, !, asserta(position(X,F)), print('You moved to the west.'), nl, !, movEnemy, !.
+n :- print('Do not move to the nort or you will die!!'), nl, !.
+
+s :- position(X,Y), F is X+1, \+ object_loc(F,Y,dz), retract(position(_,_)), countPlaytime, !, asserta(position(X,F)), print('You moved to the west.'), nl, !, movEnemy, !.
+s :- print('Do not move to the south or you will die!!'), nl, !.
+
+countPlaytime :- playtime(T), T1 is T+1,
+    retract(playtime(_)), asserta(playtime(T1)), die, !.
 
 /* mekanisme menggunakan barang di inventory */
 use(bandage) :-
@@ -320,3 +339,5 @@ status :-
 	inventory(L), print('Inventory : '), print(L), nl,
 	enemy_num(E), print('Enemy left : '), print(E), nl,
 	fail.
+
+/* Kondisi kalah */
