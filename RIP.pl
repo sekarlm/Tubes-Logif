@@ -22,7 +22,7 @@
 :- dynamic(medicine/2).
 :- dynamic(playtime/1).
 
-init :- 
+init :-
     /* Fakta pemain */
     /* Setting awal player */
     asserta(position(7,8)), /* posisi awal player pada petak (7,8) */
@@ -354,8 +354,8 @@ status :-
 	used_weapon(W), print('Weapon: '), print(W), nl,
 	jmlarmor(Ar), print('Armor : '), print(Ar), nl,
 	jmlammo(A), print('Ammo : '), print(A), nl,
-	enemy_num(E), print('Enemy left : '), print(E), nl,
 	inventory(L), print('Inventory : '), print(L), nl,
+	enemy_num(E), print('Enemy left : '), print(E), nl,
 	fail.
 
 /*Kelola Inventory*/
@@ -363,19 +363,20 @@ status :-
 in_inventory(X):-
 	inventory(L),
 	member(X,L),!.
-	
+
 /*PutInInvent untuk taruh barang yang diambil ke dalam inventory*/
 /*Masih ada tempat di inventory*/
-put_in_inventory(X,Y,Object) :- inventory(L), length(L,Z), Z < 5, 
+put_in_invent(X,Y,Object) :- inventory(L), length(L,Z), Z < 5,
 	retract(inventory(_)),
 	retract(object_loc(X,Y,Object)),
 	print('Add '), print(Object), print(' to inventory.'), nl,
 	asserta(inventory([Object|L])), movenemy,countPlaytime,!.
+
 /*Kasus inventory penuh*/
 put_in_invent(X,Y,Object):-
 	inventory(L),length(L,Z),Z=5,
 	print("Can't add the "),print(Object),print(" to inventory."),nl,!.
-	
+
 /*Take(Object) untuk ambil object yang sepetak dengan player*/
 take(Object):-
 	/*Object=Enemy*/
@@ -437,16 +438,16 @@ process(end_of_file) :- !.
 process(Data) :- asserta(Data), fail.
 
 /* Menyerang musuh */
-attack:- position(X,Y), object_loc(X,Y, Name), enemy(Name,H,P), 
+attack:- position(X,Y), object_loc(X,Y, Name), enemy(Name,H,P),
 	used_weapon(none), weapon(W,A),
 	print('You cannot attack, you dont have a weapon'),!.
 
 /* Menyerang musuh */
-attack:- position(X,Y), object_loc(X,Y, Name), enemy(Name,H,P), 
+attack:- position(X,Y), object_loc(X,Y, Name), enemy(Name,H,P),
 	used_weapon(none), weapon(W,A),
 	print('You cannot attack, you dont have a weapon'),!.
 
-attack:- position(X,Y), object_loc(X,Y, Name), enemy(Name,H,P), 
+attack:- position(X,Y), object_loc(X,Y, Name), enemy(Name,H,P),
 	used_weapon(W), weapon(W,A),
 	H1 is H - A, retract(enemy(Name,H,P)),
 	print(Name), print(' HP dropped to '), check_health(H1), nl,
@@ -461,7 +462,7 @@ check_health(A) :- print(A), !.
 /* Mekanisme kematian musuh */
 checkdeath(X) :- enemy(X, A, _), A < 1, retract(enemy(X,_,_)),
 	print(X), print(' is dead.'), nl,
-	retract(at(_,_,X)), enemy_num(B), retract(enemy_num(_)), B1 is B - 1, asserta(enemy_num(B1)), checkvictory, !. 
+	retract(at(_,_,X)), enemy_num(B), retract(enemy_num(_)), B1 is B - 1, asserta(enemy_num(B1)), checkvictory, !.
 checkdeath(A) :- !.
 
 /* Kondisi menang */
@@ -469,8 +470,8 @@ checkvictory :- enemy_num(0), print('Congratulations, you win the game, you trul
 
 /* Pergerakan musuh */
 movenemy :- move_enemy(voldemort), move_enemy(bellatrix), move_enemy(inheritor), move_enemy(symbiote), move_enemy(madara), move_enemy(obito), move_enemy(sullivan), move_enemy(wazowski), move_enemy(oozmakappa), move_enemy(sousky), !.
-move_enemy(Name) :- object_loc(A,B, Name), random(-1,1,X), C is A + X, C > 0, C < 16, retract(at(_,_,Name)), asserta(at(C,B, Name)), \+ C = A, !. 
-move_enemy(Name) :- object_loc(A,B, Name), random(-1,1,Y), C is B + Y, C > 0, C < 16, retract(at(_,_,Name)), asserta(at(A,C, Name)), !. 
+move_enemy(Name) :- object_loc(A,B, Name), random(-1,1,X), C is A + X, C > 0, C < 16, retract(at(_,_,Name)), asserta(at(C,B, Name)), \+ C = A, !.
+move_enemy(Name) :- object_loc(A,B, Name), random(-1,1,Y), C is B + Y, C > 0, C < 16, retract(at(_,_,Name)), asserta(at(A,C, Name)), !.
 
 /* kondisi habis nyawa */
 die :- health(A), A < 1,
