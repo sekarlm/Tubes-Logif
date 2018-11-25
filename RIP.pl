@@ -401,9 +401,14 @@ take(Object):-
 	/*else, Gaada object*/
 	print("There's no any "),print(Object),print("detected"),!.
 	
-	
-
-	
-	
-
+/* Map */
+map :- printMap(0,0), !.
+/* Kasus khusus */
+printMap(16,16) :- print('X'), !.
+printMap(X,16) :- print('X'), nl, !, F is X+1, printMap(F, 0).
+/* Kasus umum */
+printMap(X,Y) :- position(X,Y), print('P'), !, F is Y+1, printMap(X,F).
+printMap(X,Y) :- object_loc(X,Y, dz), print('X'), !, F is Y+1, printMap(X,F).
+printMap(X,Y) :- object_loc(X,Y, Objek), enemy(Objek,_,_), print('E'), !, F is Y+1, printMap(X,F).
+printMap(X,Y) :- print('-'), F is Y + 1, printMap(X,F).
 
